@@ -1,0 +1,43 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { ExtensionContext, Uri } from 'vscode';
+import { LanguageClientOptions } from 'vscode-languageclient';
+
+import { LanguageClient } from 'vscode-languageclient/browser';
+import { getInitOptions } from './common';
+
+// this method is called when vs code is activated
+export function activate(context: ExtensionContext) {
+
+	console.log('web lint activated!');
+
+	const documentSelector = [
+	{ language: 'python' },
+	{ language: 'java' },
+	{ language: 'c' },
+	{ language: 'cpp' }];
+	const InitOptions = getInitOptions(context);
+
+	const clientOptions: LanguageClientOptions = {
+		documentSelector,
+		synchronize: {},
+		initializationOptions: InitOptions
+	};
+
+	const client = createWorkerLanguageClient(context, clientOptions);
+	const disposable = client.start();
+	context.subscriptions.push(disposable);
+
+	client.onReady().then(() => {
+		console.log('lsp-web-extension-sample server is ready');
+	});
+}
+
+function createWorkerLanguageClient(context: ExtensionContext, clientOptions: LanguageClientOptions) {
+	const serverMain = Uri.joinPath(context.extensionUri, 'dist/server.js');
+	const worker = new Worker(serverMain.toString(true));
+	return new LanguageClient('web lint', 'Web Lint', clientOptions, worker);
+}
