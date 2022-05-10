@@ -3,14 +3,14 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ExtensionContext, Uri } from 'vscode';
+import * as vscode from 'vscode';
 import { LanguageClientOptions } from 'vscode-languageclient';
 
 import { LanguageClient } from 'vscode-languageclient/browser';
 import { getInitOptions } from './common';
 
 // this method is called when vs code is activated
-export function activate(context: ExtensionContext) {
+export function activate(context: vscode.ExtensionContext) {
 
 	console.log('web lint activated!');
 
@@ -36,8 +36,8 @@ export function activate(context: ExtensionContext) {
 	});
 }
 
-function createWorkerLanguageClient(context: ExtensionContext, clientOptions: LanguageClientOptions) {
-	const serverMain = Uri.joinPath(context.extensionUri, 'dist/server.js');
+function createWorkerLanguageClient(context: vscode.ExtensionContext, clientOptions: LanguageClientOptions) {
+	const serverMain = vscode.Uri.joinPath(context.extensionUri, 'dist/server.js');
 	const worker = new Worker(serverMain.toString(true));
 	return new LanguageClient('web lint', 'Web Lint', clientOptions, worker);
 }

@@ -6,8 +6,8 @@ interface InitOptions {
 }
 
 export const getInitOptions = (context: vscode.ExtensionContext) => {
-    const treeSitterWasmUri = vscode.Uri.joinPath(context.extensionUri,'wasm/tree-sitter.wasm');
-
+    let _treeuri = vscode.Uri.joinPath(context.extensionUri,'wasm/tree-sitter.wasm');
+    const treeSitterWasmUri = 'importScripts' in globalThis ? _treeuri.toString() :  _treeuri.fsPath;
     const paths = {
         c: 'wasm/tree-sitter-c.wasm',
         cpp:'wasm/tree-sitter-cpp.wasm',
@@ -19,7 +19,9 @@ export const getInitOptions = (context: vscode.ExtensionContext) => {
 
     for(let [lang, uri] of Object.entries(paths))
     {
-        lang_uri.set(lang,uri);
+        let pathuri = vscode.Uri.joinPath(context.extensionUri,uri);
+        let str_uri = 'importScripts' in globalThis ? pathuri.toString() :  pathuri.fsPath
+        lang_uri.set(lang,str_uri);
     }
 
     return {

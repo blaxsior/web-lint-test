@@ -75,7 +75,8 @@ const browserServerConfig = {
 		extensions: ['.ts', '.js'], // support ts-files and js-files
 		alias: {},
 		fallback: {
-			//path: require.resolve("path-browserify")
+			fs: false,
+			path: require.resolve("path-browserify")
 		},
 	},
 	module: {
