@@ -39,5 +39,5 @@ export function activate(context: vscode.ExtensionContext) {
 function createWorkerLanguageClient(context: vscode.ExtensionContext, clientOptions: LanguageClientOptions) {
 	const serverMain = vscode.Uri.joinPath(context.extensionUri, 'dist/server.js');
 	const worker = new Worker(serverMain.toString(true));
-	return new LanguageClient('web lint', 'Web Lint', clientOptions, worker);
+	return new LanguageClient('web lint', 'web lint', clientOptions, worker);
 }

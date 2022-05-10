@@ -1,6 +1,6 @@
 {
-	"name": "lsp-web-extension-sample",
-	"description": "A language server in a web extension",
+	"name": "web-lint",
+	"description": "linting for web",
 	"author": "Microsoft Corporation",
 	"license": "MIT",
 	"version": "1.0.0",
@@ -22,8 +22,8 @@
 	"contributes": {
 		"configuration": [
 			{
-				"id": "lsp-web-extension-sample",
-				"title": "lsp-web-extension-sample",
+				"id": "web lint",
+				"title": "web lint",
 				"properties": {
 					"lsp-web-extension-sample.trace.server": {
 						"type": "string",

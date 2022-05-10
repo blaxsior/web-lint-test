@@ -51,13 +51,14 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 
 	try {
 		parser = new Parser(); // 파서 생성
+		console.log("현재 언어 : ", parser.getLanguage());
 		parser.setLanguage(Languages.getLang('python'));
-		console.log(Languages.getLang('python'));
+		console.log("현재 언어 : ", parser.getLanguage());
 		console.log("파이썬 언어 지정");
 		const tree = parser.parse(`p = []
 		p2 = 13`);
 		console.log("파싱 성공");
-		console.log(tree.rootNode.toString());
+		console.log(tree.rootNode.toString()); // 파싱이 제대로 수행되는지 확인
 	}
 	catch(e) {
 		console.log("파싱 실패", e);
