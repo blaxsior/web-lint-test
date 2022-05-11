@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 		console.log('lsp-web-extension-sample server is ready');
 	});
 
-	let disposable2 = vscode.commands.registerCommand('web-lint.helloWorld', () => {
+	const disposable2 = vscode.commands.registerCommand('web-lint.helloWorld', () => {
 		vscode.window.showWarningMessage('Hello, World!');
 	});
 	context.subscriptions.push(disposable2);
