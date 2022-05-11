@@ -34,6 +34,12 @@ export function activate(context: vscode.ExtensionContext) {
 	client.onReady().then(() => {
 		console.log('lsp-web-extension-sample server is ready');
 	});
+
+	let disposable2 = vscode.commands.registerCommand('web-lint.helloWorld', () => {
+		vscode.window.showWarningMessage('Hello, World!');
+	});
+	context.subscriptions.push(disposable2);
+
 }
 
 function createWorkerLanguageClient(context: vscode.ExtensionContext, clientOptions: LanguageClientOptions) {
