@@ -55,7 +55,7 @@
 		"lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
 		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
 		"chrome": "npm run compile && vscode-test-web --browserType=chromium --extensionDevelopmentPath=. .",
-		"open-in-browser": "vscode-test-web --extensionDevelopmentPath=. ."
+		"open-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ."
 	},
 	"devDependencies": {
 		"@types/mocha": "^8.2.2",

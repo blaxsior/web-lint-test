@@ -6,7 +6,6 @@ import { createConnection, BrowserMessageReader, BrowserMessageWriter, Diagnosti
 
 import { Color, ColorInformation, Range, InitializeParams, InitializeResult, ServerCapabilities, TextDocuments, ColorPresentation, TextEdit, TextDocumentIdentifier } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
-import * as Parser from 'web-tree-sitter';
 import { Languages } from './languages';
 import { Tree } from './tree';
 
@@ -43,7 +42,6 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	};
 	return { capabilities };
 });
-
 // Track open, change and close text document events
 const documents = new TextDocuments(TextDocument);
 documents.listen(connection);
@@ -54,8 +52,6 @@ connection.onColorPresentation(params => getColorPresentation(params.color, para
 
 //https://code.visualstudio.com/api/language-extensions/language-server-extension-guide#adding-a-simple-validation
 // 여기다가 트리 파서 과정 적용!
-
-
 
 documents.onDidChangeContent(async change => {
 	const doc = change.document;
@@ -74,10 +70,11 @@ documents.onDidChangeContent(async change => {
 	const pattern = /\b[A-Z]{2,}\b/g;
 	let m: RegExpExecArray | null;
 
+	// 패턴 매칭이 되는 놈이 있으면 찾아서 없앤다는 마인드.
 	let problems = 0;
 	const diagnostics: Diagnostic[] = [];
 	// 패턴에 맞는게 있으면 안됨!
-	while ((m = pattern.exec(text)) && problems) {
+	while ((m = pattern.exec(text)) && problems < 100) {
 		problems++;
 		const diagnostic: Diagnostic = {
 			severity: DiagnosticSeverity.Warning,
@@ -86,11 +83,10 @@ documents.onDidChangeContent(async change => {
 				end: doc.positionAt(m.index + m[0].length)
 			},
 			message: `${m[0]} is all uppercase.`,
-			source: 'ex'
+			source: 'web-lint'
 		};
 		diagnostics.push(diagnostic);
 	}
-
 	connection.sendDiagnostics({ uri: doc.uri, diagnostics });
 });
 
