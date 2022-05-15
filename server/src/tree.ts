@@ -2,24 +2,23 @@ import * as Parser from "web-tree-sitter";
 import { Languages } from "./languages";
 
 export class Tree {
-    private static _parser : Parser;
-    private static _tree : Parser.Tree|null;
-    private static _langid : string;
+    private static _parser: Parser;
+    private static _tree: Parser.Tree | null;
+    private static _langid: string;
 
-    static async init(uri : string) // 트리시터 초기화
+    static async init(uri: string) // 트리시터 초기화
     {
         await Parser.init({
-			locateFile() {
-				return uri;
-			}
-		});
+            locateFile() {
+                return uri;
+            }
+        });
 
         this._parser = new Parser(); // 파서 생성 
     }
 
     // 트리 파싱
-    static parse(str: string)
-    {
+    static parse(str: string) {
         // if(this._tree) // 트리 이미 있으면 해당 트리 사용
         // {
         //     this._tree = this._parser.parse(str, this._tree);
@@ -30,13 +29,12 @@ export class Tree {
     }
 
     // 언어 붙이기
-    static attach_lang(lang_Id : string)
-    {
+    static attach_lang(lang_Id: string) {
         // if(lang_Id != this._langid)
         // {
-            const lang = Languages.getLang(lang_Id);
-            this.clear_tree(); // 트리 초기화
-            this._parser.setLanguage(lang); // 언어 갈아 끼기
+        const lang = Languages.getLang(lang_Id);
+        this.clear_tree(); // 트리 초기화
+        this._parser.setLanguage(lang); // 언어 갈아 끼기
         // }
         // 같으면 여기서 초기화하는거 아님.
     }
