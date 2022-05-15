@@ -4,12 +4,13 @@
  *--------------------------------------------------------------------------------------------*/
 import { createConnection, BrowserMessageReader, BrowserMessageWriter, DiagnosticSeverity, Diagnostic } from 'vscode-languageserver/browser';
 
-import { Color, ColorInformation, Range, InitializeParams, InitializeResult, ServerCapabilities, TextDocuments, ColorPresentation, TextEdit, TextDocumentIdentifier } from 'vscode-languageserver';
+import { Color, ColorInformation, Range, InitializeParams, InitializeResult, ServerCapabilities, TextDocuments, ColorPresentation, TextEdit, TextDocumentIdentifier, LinkedEditingRangeRequest } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { Languages } from './languages';
 import { Tree } from './tree';
+import { ILangLint } from './lint';
 
-console.log('running server lsp-web-extension-sample');
+console.log('running server');
 
 /* browser specific setup code */
 
@@ -38,16 +39,23 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 	Tree.attach_lang('python'); // 파이썬 장착...
 
 	const capabilities: ServerCapabilities = {
-		colorProvider: {} // provide a color provider
+
 	};
 	return { capabilities };
 });
 
 // 클라언트가 린트 바뀌었다고 메시지 보내면 해당 메시지 받아서 query를 전부 새로 만든다.
-connection.onNotification('lint-config-change', (val) => {
-	console.log(val);	
+connection.onNotification('lint-config-change', (val : ILangLint[]) => {
+	console.log(`server`);
+	for(const v of val)
+	{
+		console.log(v.target);
+		for(const lint of v.lints)
+		{
+			console.log(`${lint.node_name} ${lint.type} ${lint.message} ${lint.query}`);
+		}
+	}
 });
-
 
 // Track open, change and close text document events
 const documents = new TextDocuments(TextDocument);

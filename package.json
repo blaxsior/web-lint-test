@@ -17,7 +17,8 @@
 		"onLanguage:c",
 		"onLanguage:cpp",
 		"onLanguage:java",
-		"onCommand:web-lint.helloWorld"
+		"onCommand:web-lint.setlint",
+		"onCommand:web-lint.loadlint"
 	],
 	"browser": "./dist/client",
 	"contributes": {
@@ -37,13 +38,20 @@
 						"default": "verbose",
 						"description": "Traces the communication between VS Code and the lsp-web-extension-sample language server."
 					}
-				},
-				"commands": [
-					{
-						"command": "web-lint.helloWorld",
-						"title": "Hello World"
-					}
-				]
+				}
+
+			}			
+		],
+		"commands": [
+			{
+				"command": "web-lint.setlint",
+				"title": "Set Lint",
+				"category": "WEB-LINT"
+			},
+			{
+				"command": "web-lint.loadlint",
+				"title": "Load Lint",
+				"category": "WEB-LINT"
 			}
 		]
 	},
