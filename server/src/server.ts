@@ -14,6 +14,8 @@ console.log('running server');
 
 /* browser specific setup code */
 
+let linter : ILangLint[] = [];
+
 const messageReader = new BrowserMessageReader(self);
 const messageWriter = new BrowserMessageWriter(self);
 
@@ -31,12 +33,9 @@ interface InitOptions {
 connection.onInitialize(async (params: InitializeParams): Promise<InitializeResult> => {
 	const initData: InitOptions = params.initializationOptions;
 	console.log('tree-sitter : ', initData.lang_uri);
-	console.log(initData.treeSitterWasmUri);
 
 	await Tree.init(initData.treeSitterWasmUri); // 트리 시터 초기화
 	await Languages.init(initData.lang_uri); // 언어 목록 초기화.
-
-	Tree.attach_lang('python'); // 파이썬 장착...
 
 	const capabilities: ServerCapabilities = {
 
@@ -46,7 +45,7 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 
 // 클라언트가 린트 바뀌었다고 메시지 보내면 해당 메시지 받아서 query를 전부 새로 만든다.
 connection.onNotification('lint-config-change', (val : ILangLint[]) => {
-	console.log(`server`);
+	console.log(`서버 린터 설정`);
 	for(const v of val)
 	{
 		console.log(v.target);
@@ -55,6 +54,11 @@ connection.onNotification('lint-config-change', (val : ILangLint[]) => {
 			console.log(`${lint.node_name} ${lint.type} ${lint.message} ${lint.query}`);
 		}
 	}
+
+	linter = val;
+	console.log(linter);
+
+	Languages.setQueries(linter); // 쿼리를 설정
 });
 
 // Track open, change and close text document events
@@ -75,8 +79,7 @@ documents.onDidChangeContent(async change => {
 
 	const tree = Tree.get_tree(); // 트리 가져오기
 	console.log(tree);
-
-	const diagnostic: Diagnostic[] = [];
+	
 	// tree?.rootNode.
 
 	const pattern = /\b[A-Z]{2,}\b/g;
@@ -87,6 +90,7 @@ documents.onDidChangeContent(async change => {
 	let problems = 0;
 	const diagnostics: Diagnostic[] = [];
 	// 패턴에 맞는게 있으면 안됨!
+
 	while ((m = pattern.exec(text)) && problems < 100) {
 		problems++;
 		const diagnostic: Diagnostic = {
@@ -100,6 +104,71 @@ documents.onDidChangeContent(async change => {
 		};
 		diagnostics.push(diagnostic);
 	}
+
+	const captures = Languages.getQueryCaptures(lang_id, tree);
+	console.log(captures);
+	
+	if(captures) // captures 객체가 실제로 존재할 때
+	{
+		for(const cap of captures)
+		{
+			const name = cap.name;
+			const node = cap.node;
+			let message = '';
+			let severty : DiagnosticSeverity = DiagnosticSeverity.Warning;
+
+			for(const lint of linter)
+			{
+				if(lint.target === name)
+				{
+					for(const l of lint.lints)
+					{
+						console.log(`${name}, ${l.node_name}`);
+						if(name === l.node_name)
+						{
+							message = l.message;
+							switch(l.type)
+							{
+								case 'error':
+									severty = DiagnosticSeverity.Error;
+									break;
+								case 'hint':
+									severty = DiagnosticSeverity.Hint;
+									break;
+								case 'warning':
+									severty = DiagnosticSeverity.Warning;
+									break;
+								case 'information':
+									severty = DiagnosticSeverity.Information;
+									break;
+							}
+							break;
+						}
+					}
+					break;
+				}
+			}
+			// 장기적으로는 딕셔너리 구조를 사용하는게 좋아보임...
+
+			const diagnostic: Diagnostic = {
+				severity: severty,
+				range: {
+					start:{
+						character: node.startPosition.column,
+						line : node.startPosition.row
+					},
+					end: {
+						character: node.endPosition.column,
+						line : node.endPosition.row
+					}
+				},
+				message: message,
+				source: 'web-lint'
+			};
+			diagnostics.push(diagnostic);
+		}
+	}
+
 	console.log(lang_id);
 	
 	connection.sendDiagnostics({ uri: doc.uri, diagnostics });
