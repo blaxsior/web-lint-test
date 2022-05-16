@@ -1,13 +1,13 @@
 {
-	"name": "lsp-web-extension-sample-client",
-	"description": "VSCode part of a language server in a web extension",
-	"author": "Microsoft Corporation",
+	"name": "web-lint-test-client",
+	"description": "web lint test 의 클라이언트. microsoft 사에서 제공하는 예제의 설정을 사용.",
+	"author": "blaxsior",
 	"license": "MIT",
 	"version": "0.0.1",
 	"publisher": "vscode",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Microsoft/vscode-extension-samples"
+		"url": "https://github.com/blaxsior/web-lint-test"
 	},
 	"engines": {
 		"vscode": "^1.52.0"

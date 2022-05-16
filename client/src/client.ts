@@ -49,8 +49,8 @@ export function activate(context: vscode.ExtensionContext) {
 	// 클라이언트 로딩
 	client.onReady().then(() => {
 		vscode.window.showInformationMessage('클라이언트 준비. 이제 set lint 명령으로 린터를 설정하세요!');
-		// vscode.commands.executeCommand('web-lint.loadlint')
-		// .then();
+		vscode.commands.executeCommand('web-lint.loadlint')
+		.then();
 	});
 }
 
