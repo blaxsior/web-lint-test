@@ -48,9 +48,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// 클라이언트 로딩
 	client.onReady().then(() => {
-		console.log('server is ready');
-		vscode.commands.executeCommand('web-lint.loadlint')
-		.then();
+		console.log('client is ready');
+		// vscode.commands.executeCommand('web-lint.loadlint')
+		// .then();
 	});
 }
 

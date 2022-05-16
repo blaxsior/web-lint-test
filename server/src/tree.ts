@@ -4,7 +4,6 @@ import { Languages } from "./languages";
 export class Tree {
     private static _parser: Parser;
     private static _tree: Parser.Tree | null;
-    private static _langid: string;
 
     static async init(uri: string) // 트리시터 초기화
     {
