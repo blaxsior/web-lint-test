@@ -1,0 +1,48 @@
+[
+    {
+        "target": "c",
+        "lints": [
+            {
+                "type": "information",
+                "message": "left = right 인 binary operator 입니다.",
+                "query": "((binary_expression (_) @left (_) @right (#eq? @left @right) )@samebin)",
+                "node_name": "samebin"
+            },
+            {
+                "type": "error",
+                "message": "right = 0 인 binary operator 입니다.",
+                "query": "(((binary_expression (number_literal) @left (number_literal) @right (#eq? @right 0))@divide0) (#match? @divide0 \"/\"))",
+                "node_name": "divide0"
+            }
+        ]
+    },
+    {
+        "target": "cpp",
+        "lints": [
+          
+        ]
+    },
+    {
+        "target": "java",
+        "lints": [
+          
+        ]
+    },
+    {
+        "target": "python",
+        "lints":  [
+            {
+                "type": "information",
+                "message": "left = right 인 binary operator 입니다.",
+                "query": "((binary_operator(_) @l3(_) @l4 (#eq? @l3 @l4))@samebin)",
+                "node_name": "samebin"
+            },
+            {
+                "type": "error",
+                "message": "right = 0 인 binary operator 입니다.",
+                "query": "(((binary_operator(_) @left(_) @right (#eq? @right 0) )@divide0) (#match? @divide0 \"/\"))",
+                "node_name": "divide0"
+            }
+        ]
+    }
+]
