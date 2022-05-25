@@ -10,22 +10,55 @@
             },
             {
                 "type": "error",
-                "message": "right = 0 인 binary operator 입니다.",
-                "query": "(((binary_expression (number_literal) @left (number_literal) @right (#eq? @right 0))@divide0) (#match? @divide0 \"/\"))",
+                "message": "값을 0으로 나누고 있습니다.",
+                "query": "(((binary_expression (_) @left (number_literal) @right (#match? @right \"0\\.?[0]*\"))@divide0) (#match? @divide0 \"/\"))",
                 "node_name": "divide0"
+            },
+            {
+                "type": "warning",
+                "message": "문장에 세미콜론만 작성하지 마세요.",
+                "query": "(((expression_statement) @alone_semi)(#eq? @alone_semi \";\"))",
+                "node_name": "alone_semi"
             }
         ]
     },
     {
         "target": "cpp",
         "lints": [
-          
+            {
+                "type": "information",
+                "message": "left = right 인 binary operator 입니다.",
+                "query": "((binary_expression (_) @left (_) @right (#eq? @left @right) )@samebin)",
+                "node_name": "samebin"
+            },
+            {
+                "type": "error",
+                "message": "값을 0으로 나누고 있습니다.",
+                "query": "(((binary_expression (_) @left (number_literal) @right (#match? @right \"0\\.?[0]*\"))@divide0) (#match? @divide0 \"/\"))",
+                "node_name": "divide0"
+            },
+            {
+                "type": "warning",
+                "message": "문장에 세미콜론만 작성하지 마세요.",
+                "query": "(((expression_statement) @alone_semi)(#eq? @alone_semi \";\"))",
+                "node_name": "alone_semi"
+            }
         ]
     },
     {
         "target": "java",
         "lints": [
-          
+            {
+                "type": "error",
+                "message": "값을 0으로 나누고 있습니다.",
+                "query": "(((binary_expression (_) @left ((decimal_floating_point_literal) @right1 (#eq? @right1 0.0)) ) @divide0f ) (#match? @divide0f \"/\"))",
+                "node_name": "divide0f"
+            },            {
+                "type": "error",
+                "message": "값을 0으로 나누고 있습니다.",
+                "query": "(((binary_expression (_) @left ((decimal_integer_literal) @right2 (#eq? @right2 0.0)) ) @divide0i ) (#match? @divide0i \"/\"))",
+                "node_name": "divide0i"
+            }
         ]
     },
     {
@@ -39,7 +72,7 @@
             },
             {
                 "type": "error",
-                "message": "right = 0 인 binary operator 입니다.",
+                "message": "값을 0으로 나누고 있습니다.",
                 "query": "(((binary_operator(_) @left(_) @right (#eq? @right 0) )@divide0) (#match? @divide0 \"/\"))",
                 "node_name": "divide0"
             }

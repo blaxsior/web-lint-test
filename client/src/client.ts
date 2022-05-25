@@ -12,7 +12,6 @@ import { ILangLint, ILint } from './lint';
 
 // this method is called when vs code is activated
 export function activate(context: vscode.ExtensionContext) {
-
 	console.log('web lint activated!');
 
 	const languages = ['python', 'java', 'c', 'cpp'];
@@ -66,7 +65,7 @@ async function getqueries(context: vscode.ExtensionContext, langs : string[]) {
 
 	for(const lang of langs) // 각 언어에 대한 정보 저장.
 	{ // 언어 가져오기
-		const lints : ILint[] = await context.globalState.get(lang);
+		const lints : ILint[] = await context.globalState.get(`weblint-${lang}`);
 		if(lints)
 		{
 			all_lints.push({target: lang, lints});
@@ -84,7 +83,7 @@ async function getUserInput(context: vscode.ExtensionContext) {
 
 	for(const lang_lint of json_lint) // 각 언어에 대한 정보 저장.
 	{
-		await context.globalState.update(lang_lint.target, lang_lint.lints);
+		await context.globalState.update(`weblint-${lang_lint.target}`, lang_lint.lints);
 	}
 
 	await vscode.commands.executeCommand('web-lint.loadlint');
