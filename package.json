@@ -25,21 +25,7 @@
 		"configuration": [
 			{
 				"id": "web lint",
-				"title": "web lint",
-				"properties": {
-					"lsp-web-extension-sample.trace.server": {
-						"type": "string",
-						"scope": "window",
-						"enum": [
-							"off",
-							"messages",
-							"verbose"
-						],
-						"default": "verbose",
-						"description": "Traces the communication between VS Code and the lsp-web-extension-sample language server."
-					}
-				}
-
+				"title": "web lint"
 			}			
 		],
 		"commands": [

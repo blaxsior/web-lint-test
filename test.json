@@ -56,7 +56,7 @@
             },            {
                 "type": "error",
                 "message": "값을 0으로 나누고 있습니다.",
-                "query": "(((binary_expression (_) @left ((decimal_integer_literal) @right2 (#eq? @right2 0.0)) ) @divide0i ) (#match? @divide0i \"/\"))",
+                "query": "(((binary_expression (_) @left ((decimal_integer_literal) @right2 (#eq? @right2 0)) ) @divide0i ) (#match? @divide0i \"/\"))",
                 "node_name": "divide0i"
             }
         ]

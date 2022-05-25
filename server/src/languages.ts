@@ -13,7 +13,7 @@ export class Languages {
 			console.log(uri);
 			const tree_lang = await Parser.Language.load(uri);
 			this._languages.set(lang, tree_lang);
-			console.log(this._languages.get(lang));
+			// console.log(this._languages.get(lang));
 		} // language 들을 삽입한다.
 	}
 
@@ -52,7 +52,7 @@ export class Languages {
 	public static setQueries() {
 		this._queries.clear(); // 이전에 있었던 내용을 모두 날린다.
 
-		console.log(this._linter);
+		// console.log(this._linter);
 		for (const [target, lints] of this._linter) {
 			const queries: Parser.Query[] = [];
 
@@ -71,11 +71,6 @@ export class Languages {
 				this._queries.set(target, queries);
 			}
 		}
-		// console.log('쿼리의 길이 : ', this._queries.size);
-		// console.log('쿼리의 키 :');
-		// for (const k of this._queries.keys()) {
-		// 	console.log(k);
-		// }
 	}
 	/**
 	 * 원하는 언어에 대한 쿼리 객체 반환.
@@ -91,7 +86,6 @@ export class Languages {
 			this.setQueries(); // 쿼리 설정
 			return this._queries.get(lang_Id);
 		}
-
 	}
 
 	/**

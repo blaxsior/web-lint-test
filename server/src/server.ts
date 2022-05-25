@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 import { createConnection, BrowserMessageReader, BrowserMessageWriter, DiagnosticSeverity, Diagnostic } from 'vscode-languageserver/browser';
 
-import { InitializeParams, InitializeResult, ServerCapabilities, TextDocuments, Range, VersionedTextDocumentIdentifier } from 'vscode-languageserver';
+import { InitializeParams, InitializeResult, ServerCapabilities, TextDocuments, Range } from 'vscode-languageserver';
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { Languages } from './languages';
 import { Tree } from './tree';
@@ -46,12 +46,12 @@ connection.onInitialize(async (params: InitializeParams): Promise<InitializeResu
 // 클라언트가 린트 바뀌었다고 메시지 보내면 해당 메시지 받아서 query를 전부 새로 만든다.
 connection.onNotification('lint-config-change', (val: ILangLint[]) => {
 	console.log(`서버 린터 설정`);
-	for (const v of val) {
-		console.log(v.target);
-		for (const lint of v.lints) {
-			console.log(`${lint.node_name} ${lint.type} ${lint.message} ${lint.query}`);
-		}
-	}
+	// for (const v of val) {
+	// 	console.log(v.target);
+	// 	for (const lint of v.lints) {
+	// 		console.log(`${lint.node_name} ${lint.type} ${lint.message} ${lint.query}`);
+	// 	}
+	// }
 
 	const temp = new Map<string, ILint[]>();
 
@@ -74,9 +74,8 @@ connection.onNotification('lint-config-change', (val: ILangLint[]) => {
 	);
 
 	linter = temp;
-	console.log(linter);
 
-	Languages.setLintQueries(linter); // 쿼리 설정.
+	Languages.setLintQueries(temp); // 쿼리 설정.
 });
 
 // Track open, change and close text document events
@@ -108,20 +107,6 @@ documents.onDidChangeContent(async change => {
 	let problems = 0;
 	const diagnostics: Diagnostic[] = [];
 	// 패턴에 맞는게 있으면 안됨!
-
-	// while ((m = pattern.exec(text)) && problems < 100) {
-	// 	problems++;
-	// 	const diagnostic: Diagnostic = {
-	// 		severity: DiagnosticSeverity.Warning,
-	// 		range: {
-	// 			start: doc.positionAt(m.index),
-	// 			end: doc.positionAt(m.index + m[0].length)
-	// 		},
-	// 		message: `${m[0]} is all uppercase.`,
-	// 		source: 'web-lint'
-	// 	};
-	// 	diagnostics.push(diagnostic);
-	// }
 
 	const captures = Languages.getQueryCaptures(lang_id, tree);
 	console.log(captures);
@@ -181,50 +166,3 @@ documents.onDidChangeContent(async change => {
 
 // Listen on the connection
 connection.listen();
-
-// const createWebTreeSitter = async () => {
-// 	const server = Uri.joinPath(context.extensionUri, 'dist/server.js');
-// 	await Parser.init(); // 트리 시터 초기화
-
-// 	const parser = new Parser();
-// 	parser.
-
-// 	const jslang = await Parser.Language.load('')
-// }
-
-// function treeinit() {
-// 	try {
-// 		await Parser.init({
-// 			locateFile() {
-// 				return initData.treeSitterWasmUri;
-// 			}
-// 		}); // 트리 시터 초기화
-// 		console.log("트리 시터 초기화 성공!");
-// 	}
-// 	catch (e) {
-// 		console.log(e);
-// 	}
-// 	try {
-// 		await Languages.init(initData.lang_uri); // Language 초기화
-// 		console.log("language 초기화 됨!");
-// 	}
-// 	catch (e) {
-// 		console.log("랭귀지 : ", e);
-// 	}
-// 	let parser: Parser;
-
-// 	try {
-// 		parser = new Parser(); // 파서 생성
-// 		console.log("현재 언어 : ", parser.getLanguage());
-// 		parser.setLanguage(Languages.getLang('python'));
-// 		console.log("현재 언어 : ", parser.getLanguage());
-// 		console.log("파이썬 언어 지정");
-// 		const tree = parser.parse(`p = []
-// 	p2 = 13`);
-// 		console.log("파싱 성공");
-// 		console.log(tree.rootNode.toString()); // 파싱이 제대로 수행되는지 확인
-// 	}
-// 	catch (e) {
-// 		console.log("파싱 실패", e);
-// 	}
-// }
