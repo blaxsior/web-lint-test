@@ -1,6 +1,6 @@
 # web-lint-test
 
-현재 문서의 설정은 [microsoft 에서 제공하는 예제](https://github.com/microsoft/vscode-extension-samples/tree/main/lsp-web-extension-sample/client/src)의 것을 사용하고 있습니다.  
+현재 문서는 [microsoft 에서 제공하는 예제](https://github.com/microsoft/vscode-extension-samples/tree/main/lsp-web-extension-sample/client/src)의 설정 및 구조를 활용하고 있습니다.
 처음에는 예제의 설정을 사용하는 대신에 직접 client-server 모델을 구축하려고 했으나, 동일하게 코드를 작성해도 설정 차이로 인해 다른 결과가 나와 예제의 설정을 사용하게 되었습니다.
 
 ## 주요 라이브러리
