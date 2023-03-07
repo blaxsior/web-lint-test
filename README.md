@@ -105,4 +105,6 @@ json에는 ``` ILangLint[]``` 형식으로 각 lint 가 입력됩니다.
 - query : 해당 lint rule 에 대한 S-expression 형태의 쿼리로, [tree-sitter 사이트](https://tree-sitter.github.io/tree-sitter/using-parsers#pattern-matching-with-queries)를 참조하세요.
 - node_name : 쿼리에서 캡처되는 lint rule 의 이름으로, query 상에 지정한 이름과 동일해야 합니다.
 
-예시는 test.json에 입력되어 있습니다.
+예시는 test.json에 입력되어 있습니다.  
+  
+현재 프로젝트와 관련된 보고서는 [여기](https://github.com/blaxsior/web-lint-test/blob/master/docs/%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf)를 참고해주세요.
